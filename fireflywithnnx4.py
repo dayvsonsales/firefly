@@ -18,11 +18,14 @@ warnings.filterwarnings('ignore')
 
 def set_coefs_return_predicts(result):
     decision_variable_values = result['best_decision_variable_values']
-    mlp.coefs_ = [np.array([[ decision_variable_values[0], decision_variable_values[1], decision_variable_values[2], decision_variable_values[3] ],
-                          [decision_variable_values[4], decision_variable_values[5], decision_variable_values[6], decision_variable_values[7]]]), np.array([[ decision_variable_values[8]],
-                          [ decision_variable_values[9]],
-                          [decision_variable_values[10]],
-                          [decision_variable_values[11]]])]
+    mlp.coefs_ = [np.array([[ decision_variable_values[0], decision_variable_values[1],  decision_variable_values[2], decision_variable_values[3]],
+                                     [ decision_variable_values[4],  decision_variable_values[5], decision_variable_values[6], decision_variable_values[7]],
+                                     [ decision_variable_values[8],  decision_variable_values[9], decision_variable_values[10],  decision_variable_values[11]],
+                                     [ decision_variable_values[12], decision_variable_values[13], decision_variable_values[14], decision_variable_values[15]]]), np.array([[decision_variable_values[16]],
+                                     [ decision_variable_values[17]],
+                                     [ decision_variable_values[18]],
+                                     [ decision_variable_values[19]]])]   
+    
     
     return mlp.predict(X)
 
@@ -35,17 +38,20 @@ class XORFunctionWrapper():
         self.y = y
     
     def maximum_decision_variable_values(self):
-        return [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+        return [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 
     def minimum_decision_variable_values(self):
-        return [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+        return [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
 
     def objective_function_value(self, decision_variable_values):
-        self.mlp.coefs_ = [np.array([[ decision_variable_values[0], decision_variable_values[1], decision_variable_values[2], decision_variable_values[3] ],
-                          [decision_variable_values[4], decision_variable_values[5], decision_variable_values[6], decision_variable_values[7]]]), np.array([[ decision_variable_values[8]],
-                          [ decision_variable_values[9]],
-                          [decision_variable_values[10]],
-                          [decision_variable_values[11]]])]
+        self.mlp.coefs_ = [np.array([[ decision_variable_values[0], decision_variable_values[1],  decision_variable_values[2], decision_variable_values[3]],
+                                     [ decision_variable_values[4],  decision_variable_values[5], decision_variable_values[6], decision_variable_values[7]],
+                                     [ decision_variable_values[8],  decision_variable_values[9], decision_variable_values[10],  decision_variable_values[11]],
+                                     [ decision_variable_values[12], decision_variable_values[13], decision_variable_values[14], decision_variable_values[15]]]), np.array([[decision_variable_values[16]],
+                                     [ decision_variable_values[17]],
+                                     [ decision_variable_values[18]],
+                                     [ decision_variable_values[19]]])]  
+
         predictions = self.mlp.predict(self.X)
         
         acc = float(classification_report(self.y, predictions, output_dict=True)['accuracy'])
@@ -56,16 +62,20 @@ class XORFunctionWrapper():
         pass
 
 
-data = pd.read_csv('/Users/dayvsonsales/trab-icomp/dataset_xor2.csv')
+data = pd.read_csv('/Users/dayvsonsales/trab-icomp/dataset_xor4.csv')
 
-feature_cols = ['x1', 'x2']
+feature_cols = ['x1', 'x2', 'x3', 'x4']
 
 X = data[feature_cols]
 y = data.result
 
-number_of_variables = 12
-number_of_fireflies = 100
-max_generation = 50
+#mlp = MLPClassifier(activation='tanh', hidden_layer_sizes=(4 ), max_iter=1)
+#mlp.fit(X,y)
+#print(mlp.coefs_)
+
+number_of_variables = 20
+number_of_fireflies = 200
+max_generation = 100
 randomization_parameter_alpha = 0.2
 absorption_coefficient_gamma = 1.0
 
@@ -83,9 +93,12 @@ for _ in range(4):
     print(result)
     results.append(result)
 
+plt.subplot(5, 2, 1)
 plt.plot(y)
-
+c = 2
 for r in results:
+    plt.subplot(5, 2, c)
+    c = c + 1
     plt.plot(set_coefs_return_predicts(r))
 
 plt.show(block=True)
