@@ -83,12 +83,9 @@ for _ in range(4):
     print(result)
     results.append(result)
 
-plt.subplot(5, 2, 1)
 plt.plot(y)
-c = 2
+
 for r in results:
-    plt.subplot(5, 2, c)
-    c = c + 1
     plt.plot(set_coefs_return_predicts(r))
 
 plt.show(block=True)
