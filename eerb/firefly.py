@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Jul 28 22:20:45 2019
-
 @author: dayvsonsales
 Based on: https://github.com/tadatoshi/metaheuristic_algorithms_python/blob/master/metaheuristic_algorithms/firefly_algorithm.py
 """
